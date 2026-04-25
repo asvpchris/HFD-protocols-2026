@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Medic Prep — EMS Protocols Study App</title>
+    <meta name="description" content="A study hub for EMS / NREMT paramedic students built around the HFD 2026 protocols." />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <!-- ===================== TOP NAV ===================== -->
+    <header class="topbar">
+        <button class="brand" id="brandBtn" type="button" aria-label="Go home">
+            <span class="brand-mark">+</span>
+            <span class="brand-text">Medic<span class="accent">Prep</span></span>
+        </button>
+
+        <div class="search-wrap">
+            <input id="globalSearch" type="search" placeholder="Search protocols, drugs, topics..."
+                   aria-label="Search protocols" autocomplete="off" />
+            <div id="searchResults" class="search-results" hidden></div>
+        </div>
+
+        <div class="top-actions">
+            <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle dark mode">
+                <span class="theme-icon">◐</span>
+            </button>
+            <button id="resetBtn" class="icon-btn" type="button" title="Reset progress" aria-label="Reset progress">
+                ↺
+            </button>
+        </div>
+    </header>
+
+    <main id="view" class="view"></main>
+
+    <!-- Tiny footer -->
+    <footer class="footer">
+        <span>MedicPrep · built for paramedic / NREMT prep · content adapted from HFD EMS Protocols 2026</span>
+    </footer>
+
+    <!-- Templates used by app.js -->
+    <template id="tpl-dashboard">
+        <section class="dash">
+            <div class="hero">
+                <h1>Study smarter, not harder.</h1>
+                <p class="muted">
+                    Pick a section, run a timed quiz, flip flashcards, or drill scenarios.
+                    Your progress is saved automatically on this device.
+                </p>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-num" data-stat="answered">0</div>
+                    <div class="stat-lbl">Questions answered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" data-stat="accuracy">—</div>
+                    <div class="stat-lbl">Overall accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" data-stat="streak">0</div>
+                    <div class="stat-lbl">Day streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" data-stat="weak">—</div>
+                    <div class="stat-lbl">Weakest section</div>
+                </div>
+            </div>
+
+            <div class="dash-actions">
+                <button class="primary" data-action="rapid">⚡ Rapid Review (20 Q mix)</button>
+                <button class="ghost" data-action="scenario">🚑 Scenario Mode</button>
+                <button class="ghost" data-action="missed">🔁 Review Missed Only</button>
+            </div>
+
+            <h2>Sections</h2>
+            <div class="section-grid" id="sectionGrid"></div>
+        </section>
+    </template>
+
+    <template id="tpl-section">
+        <section class="section-hub">
+            <button class="back" data-back>← Back to dashboard</button>
+            <div class="section-head">
+                <h1 data-slot="title"></h1>
+                <p class="muted" data-slot="blurb"></p>
+                <div class="section-stats" data-slot="stats"></div>
+            </div>
+
+            <nav class="tabs" role="tablist">
+                <button class="tab active" data-tab="quiz">Quiz Mode</button>
+                <button class="tab" data-tab="study">Study Mode</button>
+                <button class="tab" data-tab="flash">Flashcards</button>
+                <button class="tab" data-tab="cheat">Cheat Sheet</button>
+            </nav>
+
+            <div class="tab-panels">
+                <div class="panel" data-panel="quiz"></div>
+                <div class="panel" data-panel="study" hidden></div>
+                <div class="panel" data-panel="flash" hidden></div>
+                <div class="panel" data-panel="cheat" hidden></div>
+            </div>
+        </section>
+    </template>
+
+    <template id="tpl-quizStart">
+        <div class="quiz-start card">
+            <h2>Quiz configuration</h2>
+            <label class="field">
+                <span>Number of questions</span>
+                <select data-cfg="count">
+                    <option value="10">10</option>
+                    <option value="20" selected>20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                </select>
+            </label>
+            <label class="field">
+                <span>Difficulty</span>
+                <select data-cfg="difficulty">
+                    <option value="any" selected>Any</option>
+                    <option value="basic">Basic</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced / scenario</option>
+                </select>
+            </label>
+            <label class="field">
+                <span>Timer (per question)</span>
+                <select data-cfg="timer">
+                    <option value="0" selected>Untimed</option>
+                    <option value="30">30 seconds</option>
+                    <option value="45">45 seconds</option>
+                    <option value="60">60 seconds</option>
+                    <option value="90">90 seconds</option>
+                </select>
+            </label>
+            <label class="field check">
+                <input type="checkbox" data-cfg="missed" /> Only from my missed questions
+            </label>
+            <div class="row">
+                <button class="primary" data-start>Start quiz</button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Search result row -->
+    <template id="tpl-searchRow">
+        <button class="search-row" data-section="" data-id="">
+            <span class="sr-title"></span>
+            <span class="sr-meta"></span>
+        </button>
+    </template>
+
+    <!-- Data / app -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
